@@ -14,12 +14,16 @@ extra_payment = 1000
 month = 0
 while principal > 0:
     month += 1
-    principal = principal * (1+rate/12) - payment
+    if principal <= payment:
+        payment = principal
+        principal = 0
+    else:
+        principal = round(principal * (1+rate/12) - payment, 2)
     if extra_payment_start_month <= month < extra_payment_end_month:
         principal = principal - extra_payment
         total_paid = total_paid + extra_payment
-    total_paid = total_paid + payment
-    print(month, f'{total_paid:,.2f}', f'{principal:,.2f}')
+    total_paid = round(total_paid + payment, 2)
+    print(month, total_paid, principal)
 
-print('Total paid',f'{total_paid:,.2f}')
+print('Total paid',total_paid)
 print('Months', month)
